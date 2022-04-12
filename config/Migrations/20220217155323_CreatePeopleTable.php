@@ -15,15 +15,14 @@ class CreatePeopleTable extends AbstractMigration
     {
         $table = $this->table(('people'));
         $table
-            ->addColumn('first_name_1', 'string', ['limit' => 100, 'null' => false])
-            ->addColumn('first_name_2', 'string', ['limit' => 100, 'null' => false])
-            ->addColumn('last_name_1', 'string', ['limit' => 100, 'null' => false])
-            ->addColumn('last_name_2', 'string', ['limit' => 100, 'null' => false])
-            ->addColumn('email', 'string', ['default' => null])
-            ->addColumn('nacional_identify', 'string', ['null' => false]) //unique
+            ->addColumn('first_name', 'string', ['limit' => 100, 'null' => false])
+            ->addColumn('last_name', 'string', ['limit' => 100, 'null' => false])
+            ->addColumn('email', 'string', ['default' => null, 'null' => true])
+            ->addColumn('nacional_identify', 'string', ['null' => true]) //unique
 
-            ->addColumn('department_id', 'integer', ['default' => null])
-            ->addColumn('position_id', 'integer', ['default' => null])
+            ->addColumn('position_id', 'integer', ['default' => null, 'null' => true])
+            ->addColumn('user_id', 'integer', ['default' => null, 'null' => false])
+            ->addColumn('department_headquarter_id', 'integer', ['default' => null, 'null' => true])
 
             ->addColumn('created', 'datetime', [
                 'default' => null,
@@ -33,17 +32,20 @@ class CreatePeopleTable extends AbstractMigration
                 'default' => null,
                 'null' => false,
             ])
-
-
-            ->addForeignKey('department_id', 'departments', 'id', [
-                'delete' => 'CASCADE',
-                'update' => 'CASCADE'
-            ])
             ->addForeignKey('position_id', 'positions', 'id', [
                 'delete' => 'CASCADE',
                 'update' => 'CASCADE'
             ])
-            ->addIndex(['email', 'nacional_identify'], ['unique' => true]);
+            ->addForeignKey('user_id', 'users', 'id', [
+                'delete' => 'CASCADE',
+                'update' => 'CASCADE'
+            ])
+            ->addForeignKey('department_headquarter_id', 'department_headquarter', 'id', [
+                'delete' => 'SET NULL',
+                'update' => 'CASCADE'
+            ])
+            ->addIndex(['email', 'nacional_identify'], ['unique' => true])
+            ->addIndex(['user_id'], ['unique' => true]);
         $table->save();
     }
 }

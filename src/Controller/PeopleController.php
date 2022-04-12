@@ -22,6 +22,10 @@ class PeopleController extends ApiController
     {
         try {
             $people = $this->People->find('all');
+            $response =  $this->response
+                ->withType('application/json')
+                ->withStringBody(json_encode($people));
+            return $response;
         } catch (\Throwable $th) {
             $people = $th->getMessage();
         }
@@ -120,7 +124,7 @@ class PeopleController extends ApiController
         try {
             $person = $this->People->get($id);
             $isDeleted = $this->People->delete($person);
-            $message = ($isDeleted) 
+            $message = ($isDeleted)
                 ? 'The person has been deleted.'
                 : 'The person could not be deleted. Please, try again.';
         } catch (\Throwable $th) {
@@ -132,7 +136,8 @@ class PeopleController extends ApiController
         $this->set('message', $message);
     }
 
-    public function settings(){
+    public function settings()
+    {
         $headquarters = $this->loadModel('Headquarters');
         $department = $this->loadModel('Departments');
         $positions = $this->loadModel('Position');
@@ -140,4 +145,3 @@ class PeopleController extends ApiController
         $this->set(compact('headquarters', 'departments', 'positions'));
     }
 }
- 

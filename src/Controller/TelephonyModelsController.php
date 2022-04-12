@@ -21,7 +21,6 @@ class TelephonyModelsController extends ApiController
      */
     public function index()
     {
-
         $telephonyModels = $this->TelephonyModels->find('all', [
             'contain' => ['Models', 'TelephonyTypes'],
         ]);

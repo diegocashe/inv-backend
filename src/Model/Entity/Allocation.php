@@ -13,15 +13,15 @@ use Cake\ORM\Entity;
  * @property \Cake\I18n\FrozenTime $dispatch_date
  * @property string $ubication
  * @property bool $active
- * @property int $assigned_people_id
  * @property int $item_id
- * @property int $assignor_user_id
+ * @property int|null $assigned_people_id
+ * @property int|null $assignor_people_id
  * @property \Cake\I18n\FrozenTime $created
  * @property \Cake\I18n\FrozenTime $modified
  *
- * @property \App\Model\Entity\Person $person
+ * @property \App\Model\Entity\Person $assigned
+ * @property \App\Model\Entity\Person $assignor
  * @property \App\Model\Entity\Item $item
- * @property \App\Model\Entity\User $user
  * @property \App\Model\Entity\Observation[] $observations
  */
 class Allocation extends Entity
@@ -40,14 +40,14 @@ class Allocation extends Entity
         'dispatch_date' => true,
         'ubication' => true,
         'active' => true,
-        'assigned_people_id' => true,
         'item_id' => true,
-        'assignor_user_id' => true,
+        'assigned_people_id' => true,
+        'assignor_people_id' => true,
         'created' => true,
         'modified' => true,
-        'person' => true,
+        'assigned' => true,
+        'assignor' => true,
         'item' => true,
-        'user' => true,
         'observations' => true,
     ];
 }

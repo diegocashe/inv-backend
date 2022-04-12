@@ -22,12 +22,24 @@ class TelephonyController extends AppController
     public function index()
     {
         $telephony = $this->Telephony->find('all', [
-            'contain' => ['Items' => ['Models'], 'PhoneLines'],
+            'contain' => ['Items' => ['Models']],
         ])->toList();
+
+        $fn = function(Telephony $e){
+            if($e->phone_line_id != null){
+                $telephony = $this->Telephony->get($e->id, [
+                    'contain' => ['Items' => ['Models'], 'PhoneLines'],
+                ]);
+                return $telephony;
+            }
+            return $e;
+        };
+
+        $result = array_map($fn, $telephony);
 
         $response =  $this->response
             ->withType('application/json')
-            ->withStringBody(json_encode($telephony));
+            ->withStringBody(json_encode($result));
         return $response;
     }
 

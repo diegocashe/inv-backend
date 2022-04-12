@@ -25,6 +25,10 @@ class AllocationsController extends ApiController
             $allocations = $this->Allocations->find('all', [
                 'contain' => ['People', 'Items', 'Observations'],
             ]);
+            $response =  $this->response
+                ->withType('application/json')
+                ->withStringBody(json_encode($allocations));
+            return $response;
         } catch (\Throwable $th) {
             $allocations = $th->getMessage();
         }

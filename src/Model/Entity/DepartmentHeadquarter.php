@@ -6,20 +6,19 @@ namespace App\Model\Entity;
 use Cake\ORM\Entity;
 
 /**
- * User Entity
+ * DepartmentHeadquarter Entity
  *
  * @property int $id
- * @property string $username
- * @property string $password
- * @property bool $active
- * @property int $rol_id
+ * @property int|null $department_id
+ * @property int|null $headquarters_id
  * @property \Cake\I18n\FrozenTime $created
  * @property \Cake\I18n\FrozenTime $modified
  *
- * @property \App\Model\Entity\Role $role
- * @property \App\Model\Entity\Person $person
+ * @property \App\Model\Entity\Department $department
+ * @property \App\Model\Entity\Headquarters $headquarters
+ * @property \App\Model\Entity\Person[] $people
  */
-class User extends Entity
+class DepartmentHeadquarter extends Entity
 {
     /**
      * Fields that can be mass assigned using newEntity() or patchEntity().
@@ -31,22 +30,12 @@ class User extends Entity
      * @var array
      */
     protected $_accessible = [
-        'username' => true,
-        'password' => true,
-        'active' => true,
-        'rol_id' => true,
+        'department_id' => true,
+        'headquarters_id' => true,
         'created' => true,
         'modified' => true,
-        'role' => true,
-        'person' => true,
-    ];
-
-    /**
-     * Fields that are excluded from JSON versions of the entity.
-     *
-     * @var array
-     */
-    protected $_hidden = [
-        'password',
+        'department' => true,
+        'headquarters' => true,
+        'people' => true,
     ];
 }

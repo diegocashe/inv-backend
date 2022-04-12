@@ -29,25 +29,38 @@ class ItemsController extends ApiController
     {
 
         $items = $this->Items->find('all', [
-            'contain' => ['Models', 'States', 'Allocations', 'ExtraRows'],
+            'contain' => ['Models' => ['Brands', 'ItemTypes'], 'States', 'Allocations', 'ExtraRows'],
         ])->toList();
 
         // 3 telephony --- 4 phoneline
         $fn = function (Item $e) {
             $itemType = $e->model->item_type_id;
             if ($itemType === 3) {
+
                 $item = $this->Items->get($e->id, [
                     'contain' => [
-                        'Models', 'States', 'Allocations', 'ExtraRows',
-                        'Telephony'=>['PhoneLines']],
+                        'Models' => ['Brands', 'ItemTypes'], 'States', 'Allocations', 'ExtraRows',
+                        'Telephony'
+                    ],
                 ]);
+
+                if ($item->telephony->phone_line_id != null) {
+                    $item = $this->Items->get($e->id, [
+                        'contain' => [
+                            'Models' => ['Brands', 'ItemTypes'], 'States', 'Allocations', 'ExtraRows',
+                            'Telephony' => ['PhoneLines']
+                        ],
+                    ]);
+                }
+
                 return $item;
             }
             if ($itemType === 4) {
                 $item = $this->Items->get($e->id, [
                     'contain' => [
-                        'Models', 'States', 'Allocations', 'ExtraRows',
-                        'PhoneLines'=> ['Operators', 'Telephony']]
+                        'Models' => ['Brands', 'ItemTypes'], 'States', 'Allocations', 'ExtraRows',
+                        'PhoneLines' => ['Operators', 'Telephony']
+                    ]
                 ]);
                 return $item;
             }
@@ -80,7 +93,8 @@ class ItemsController extends ApiController
             $item = $this->Items->get($item->id, [
                 'contain' => [
                     'Models', 'States', 'Allocations', 'ExtraRows',
-                    'Telephony'=>['PhoneLines']],
+                    'Telephony' => ['PhoneLines']
+                ],
             ]);
         }
 
@@ -88,7 +102,8 @@ class ItemsController extends ApiController
             $item = $this->Items->get($item->id, [
                 'contain' => [
                     'Models', 'States', 'Allocations', 'ExtraRows',
-                    'PhoneLines'=> ['Operators', 'Telephony']]
+                    'PhoneLines' => ['Operators', 'Telephony']
+                ]
             ]);
         }
 
@@ -141,20 +156,43 @@ class ItemsController extends ApiController
      */
     public function edit($id = null)
     {
-        $item = $this->Items->get($id, [
-            'contain' => [],
-        ]);
+
         if ($this->request->is(['patch', 'post', 'put'])) {
-            $item = $this->Items->patchEntity($item, $this->request->getData());
-            try {
-                $editedItem = $this->Items->save($item);
-                $message = 'The item has been saved.';
-            } catch (\Throwable $th) {
-                $editedItem = $th->getMessage();
-                $message = 'The item could not be saved. Please, try again.';
+
+            $body = $this->request->getData();
+
+            $item = $this->Items->get($id, [
+                'contain' => ['Models' => ['Brands', 'ItemTypes',]],
+            ]);
+
+            $item = $this->Items->patchEntity($item, $body);
+            $item = $this->Items->save($item);
+
+
+            //  3 -- telefonía, 4 -- phonelines
+            $type = $item->model->item_type_id;
+
+            if ($type == 3 && array_key_exists('telephony', $body)) {
+                $item = $this->Items->get($id, [
+                    'contain' => ['Telephony'],
+                ]);
+
+                $telephony = $this->Items->Telephony->patchEntity($item->telephony, $body['telephony']);
+                $telephony = $this->Items->Telephony->save($telephony);
             }
-            $this->set('message', $message);
-            $this->set('item', $editedItem);
+            if ($type == 4 && array_key_exists('phoneline', $body)) {
+                $item = $this->Items->get($id, [
+                    'contain' => ['PhoneLines'],
+                ]);
+
+                $phoneline = $this->Items->PhoneLines->patchEntity($item->phone_line, $body['phoneline']);
+                $phoneline = $this->Items->PhoneLines->save($phoneline);
+            }
+
+            $response =  $this->response
+                ->withType('application/json')
+                ->withStringBody(json_encode($item));
+            return $response;
         }
     }
 
@@ -168,17 +206,12 @@ class ItemsController extends ApiController
     public function delete($id = null)
     {
         $this->request->allowMethod(['post', 'delete']);
-        try {
-            $item = $this->Items->get($id);
-            $isDeleted = $this->Items->delete($item);
-            $message = 'The item has been deleted.';
-        } catch (\Throwable $th) {
-            $isDeleted = $th->getMessage();
-            $message = 'error';
-        }
-
-        $this->set('message', $message);
-        $this->set('deleted', $isDeleted);
+        $item = $this->Items->get($id);
+        $isDeleted = $this->Items->delete($item);
+        $response =  $this->response
+            ->withType('application/json')
+            ->withStringBody(json_encode($isDeleted));
+        return $response;
     }
 
     public function settings()

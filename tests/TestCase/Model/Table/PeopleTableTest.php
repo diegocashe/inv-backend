@@ -25,8 +25,9 @@ class PeopleTableTest extends TestCase
      */
     protected $fixtures = [
         'app.People',
-        'app.Departments',
         'app.Positions',
+        'app.Users',
+        'app.DepartmentHeadquarter',
     ];
 
     /**

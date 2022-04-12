@@ -19,7 +19,6 @@ class CreateDepartmentsTable extends AbstractMigration
                 // UNIQUE
             ])
             ->addColumn('description', 'text', ['default' => null])
-            ->addColumn('headquarters_id', 'integer', ['null' => false])
 
             ->addColumn('created', 'datetime', [
                 'default' => null,
@@ -29,11 +28,31 @@ class CreateDepartmentsTable extends AbstractMigration
                 'default' => null,
                 'null' => false,
             ])
-            ->addForeignKey('headquarters_id', 'headquarters', 'id', [
-                'delete' => 'CASCADE',
-                'update' => 'CASCADE'
-            ])
+            
             ->addIndex(['name'], ['unique' => true]);
         $table->save();
+
+        $depHq = $this->table(('department_headquarter'));
+        $depHq
+            ->addColumn('department_id', 'integer', ['default' => null, 'null'=>true])
+            ->addColumn('headquarters_id', 'integer', ['default' => null, 'null'=>true])
+
+            ->addColumn('created', 'datetime', [
+                'default' => null,
+                'null' => false,
+            ])
+            ->addColumn('modified', 'datetime', [
+                'default' => null,
+                'null' => false,
+            ])
+            ->addForeignKey('department_id', 'departments', 'id', [
+                'delete' => 'SET NULL',
+                'update' => 'CASCADE'
+            ])
+            ->addForeignKey('headquarters_id', 'headquarters', 'id', [
+                'delete' => 'SET NULL',
+                'update' => 'CASCADE'
+            ]);
+        $depHq->save();
     }
 }

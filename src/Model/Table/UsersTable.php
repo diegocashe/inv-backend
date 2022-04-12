@@ -11,8 +11,8 @@ use Cake\Validation\Validator;
 /**
  * Users Model
  *
- * @property \App\Model\Table\PeopleTable&\Cake\ORM\Association\BelongsTo $People
  * @property \App\Model\Table\RolesTable&\Cake\ORM\Association\BelongsTo $Roles
+ * @property \App\Model\Table\PeopleTable&\Cake\ORM\Association\HasOne $People
  *
  * @method \App\Model\Entity\User newEmptyEntity()
  * @method \App\Model\Entity\User newEntity(array $data, array $options = [])
@@ -48,13 +48,12 @@ class UsersTable extends Table
 
         $this->addBehavior('Timestamp');
 
-        $this->belongsTo('People', [
-            'foreignKey' => 'people_id',
-            'joinType' => 'INNER',
-        ]);
         $this->belongsTo('Roles', [
             'foreignKey' => 'rol_id',
             'joinType' => 'INNER',
+        ]);
+        $this->hasOne('People', [
+            'foreignKey' => 'user_id',
         ]);
     }
 
@@ -100,7 +99,6 @@ class UsersTable extends Table
     public function buildRules(RulesChecker $rules): RulesChecker
     {
         $rules->add($rules->isUnique(['username']), ['errorField' => 'username']);
-        $rules->add($rules->existsIn('people_id', 'People'), ['errorField' => 'people_id']);
         $rules->add($rules->existsIn('rol_id', 'Roles'), ['errorField' => 'rol_id']);
 
         return $rules;

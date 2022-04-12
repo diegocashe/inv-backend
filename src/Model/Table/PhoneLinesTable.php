@@ -59,7 +59,7 @@ class PhoneLinesTable extends Table
         ]);
         $this->hasOne('Telephony', [
             'foreignKey' => 'phone_line_id',
-        ]);
+        ])->setDependent(false);
     }
 
     /**

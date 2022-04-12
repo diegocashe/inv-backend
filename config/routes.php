@@ -105,6 +105,9 @@ return static function (RouteBuilder $routes) {
         $builder->get('/consumable-models/settings', ['controller' => 'ConsumableModels',  'action' => 'settings']);
         $builder->get('/telephony-models/settings', ['controller' => 'TelephonyModels',  'action' => 'settings']);
 
+        $builder->connect('/login', ['controller' => 'Login',  'action' => 'login']);
+        $builder->connect('/singin', ['controller' => 'Login', 'action' => 'singin']);
+
         //principal controllers
         $builder->resources('Allocations');
         $builder->resources('Brands');

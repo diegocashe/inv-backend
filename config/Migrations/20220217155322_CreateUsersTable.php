@@ -19,7 +19,6 @@ class CreateUsersTable extends AbstractMigration
             ->addColumn('password', 'string', ['null' => false])
             ->addColumn('active', 'boolean', ['default' => true])
 
-            ->addColumn('people_id', 'integer', ['default' => null])
             ->addColumn('rol_id', 'integer', ['default' => null])
 
             ->addColumn('created', 'datetime', [
@@ -32,10 +31,6 @@ class CreateUsersTable extends AbstractMigration
             ])
 
             ->addForeignKey('rol_id', 'roles', 'id', [
-                'delete' => 'CASCADE',
-                'update' => 'CASCADE'
-            ])
-            ->addForeignKey('people_id', 'people', 'id', [
                 'delete' => 'CASCADE',
                 'update' => 'CASCADE'
             ])

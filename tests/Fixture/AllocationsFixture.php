@@ -20,15 +20,15 @@ class AllocationsFixture extends TestFixture
         $this->records = [
             [
                 'id' => 1,
-                'assigment_date' => '2022-04-06 21:10:09',
-                'dispatch_date' => '2022-04-06 21:10:09',
+                'assigment_date' => '2022-04-11 19:28:09',
+                'dispatch_date' => '2022-04-11 19:28:09',
                 'ubication' => 'Lorem ipsum dolor sit amet',
                 'active' => 1,
-                'assigned_people_id' => 1,
                 'item_id' => 1,
-                'assignor_user_id' => 1,
-                'created' => '2022-04-06 21:10:09',
-                'modified' => '2022-04-06 21:10:09',
+                'assigned_people_id' => 1,
+                'assignor_people_id' => 1,
+                'created' => '2022-04-11 19:28:09',
+                'modified' => '2022-04-11 19:28:09',
             ],
         ];
         parent::init();

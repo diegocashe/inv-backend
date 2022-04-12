@@ -20,9 +20,9 @@ class CreateAllocationsTable extends AbstractMigration
             ->addColumn('ubication', 'string', ['null' => false])
             ->addColumn('active', 'boolean', ['null' => false, 'default' => true])
 
-            ->addColumn('assigned_people_id', 'integer', ['default' => null])
             ->addColumn('item_id', 'integer', ['default' => null])
-            ->addColumn('assignor_user_id', 'integer', ['default' => null])
+            ->addColumn('assigned_people_id', 'integer', ['default' => null, 'null' => true])
+            ->addColumn('assignor_people_id', 'integer', ['default' => null, 'null' => true])
 
             ->addColumn('created', 'datetime', [
                 'default' => null,
@@ -33,18 +33,20 @@ class CreateAllocationsTable extends AbstractMigration
                 'null' => false,
             ])
 
-            ->addForeignKey('assigned_people_id', 'people', 'id', [
-                'delete' => 'CASCADE',
+            ->addForeignKey('assignor_people_id', 'people', 'id', [
+                'delete' => 'SET NULL',
                 'update' => 'CASCADE'
             ])
             ->addForeignKey('item_id', 'items', 'id', [
                 'delete' => 'CASCADE',
                 'update' => 'CASCADE'
             ])
-            ->addForeignKey('assignor_user_id', 'users', 'id', [
-                'delete' => 'CASCADE',
+            ->addForeignKey('assigned_people_id', 'people', 'id', [
+                'delete' => 'SET NULL',
                 'update' => 'CASCADE'
-            ]);
+            ])
+            ->addIndex(['item_id'], ['unique' => true]);
+
         $table->save();
     }
 }

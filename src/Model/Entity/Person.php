@@ -9,19 +9,19 @@ use Cake\ORM\Entity;
  * Person Entity
  *
  * @property int $id
- * @property string $first_name_1
- * @property string $first_name_2
- * @property string $last_name_1
- * @property string $last_name_2
- * @property string $email
- * @property string $nacional_identify
- * @property int $department_id
- * @property int $position_id
+ * @property string $first_name
+ * @property string $last_name
+ * @property string|null $email
+ * @property string|null $nacional_identify
+ * @property int|null $position_id
+ * @property int $user_id
+ * @property int|null $department_headquarter_id
  * @property \Cake\I18n\FrozenTime $created
  * @property \Cake\I18n\FrozenTime $modified
  *
- * @property \App\Model\Entity\Department $department
  * @property \App\Model\Entity\Position $position
+ * @property \App\Model\Entity\User $user
+ * @property \App\Model\Entity\DepartmentHeadquarter $department_headquarter
  */
 class Person extends Entity
 {
@@ -35,17 +35,17 @@ class Person extends Entity
      * @var array
      */
     protected $_accessible = [
-        'first_name_1' => true,
-        'first_name_2' => true,
-        'last_name_1' => true,
-        'last_name_2' => true,
+        'first_name' => true,
+        'last_name' => true,
         'email' => true,
         'nacional_identify' => true,
-        'department_id' => true,
         'position_id' => true,
+        'user_id' => true,
+        'department_headquarter_id' => true,
         'created' => true,
         'modified' => true,
-        'department' => true,
         'position' => true,
+        'user' => true,
+        'department_headquarter' => true,
     ];
 }

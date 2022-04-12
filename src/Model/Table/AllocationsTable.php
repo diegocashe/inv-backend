@@ -11,9 +11,9 @@ use Cake\Validation\Validator;
 /**
  * Allocations Model
  *
- * @property \App\Model\Table\PeopleTable&\Cake\ORM\Association\BelongsTo $People
  * @property \App\Model\Table\ItemsTable&\Cake\ORM\Association\BelongsTo $Items
- * @property \App\Model\Table\UsersTable&\Cake\ORM\Association\BelongsTo $Users
+ * @property \App\Model\Table\PeopleTable&\Cake\ORM\Association\BelongsTo $People
+ * @property \App\Model\Table\PeopleTable&\Cake\ORM\Association\BelongsTo $People
  * @property \App\Model\Table\ObservationsTable&\Cake\ORM\Association\HasMany $Observations
  *
  * @method \App\Model\Entity\Allocation newEmptyEntity()
@@ -50,17 +50,15 @@ class AllocationsTable extends Table
 
         $this->addBehavior('Timestamp');
 
-        $this->belongsTo('People', [
-            'foreignKey' => 'assigned_people_id',
-            'joinType' => 'INNER',
-        ]);
         $this->belongsTo('Items', [
             'foreignKey' => 'item_id',
             'joinType' => 'INNER',
         ]);
-        $this->belongsTo('Users', [
-            'foreignKey' => 'assignor_user_id',
-            'joinType' => 'INNER',
+        $this->belongsTo('People', [
+            'foreignKey' => 'assigned_people_id',
+        ]);
+        $this->belongsTo('People', [
+            'foreignKey' => 'assignor_people_id',
         ]);
         $this->hasMany('Observations', [
             'foreignKey' => 'allocation_id',
@@ -113,7 +111,7 @@ class AllocationsTable extends Table
     {
         $rules->add($rules->existsIn('assigned_people_id', 'People'), ['errorField' => 'assigned_people_id']);
         $rules->add($rules->existsIn('item_id', 'Items'), ['errorField' => 'item_id']);
-        $rules->add($rules->existsIn('assignor_user_id', 'Users'), ['errorField' => 'assignor_user_id']);
+        $rules->add($rules->existsIn('assignor_people_id', 'People'), ['errorField' => 'assignor_people_id']);
 
         return $rules;
     }

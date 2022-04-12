@@ -3,20 +3,20 @@ declare(strict_types=1);
 
 namespace App\Test\TestCase\Model\Table;
 
-use App\Model\Table\UsersTable;
+use App\Model\Table\DepartmentHeadquarterTable;
 use Cake\TestSuite\TestCase;
 
 /**
- * App\Model\Table\UsersTable Test Case
+ * App\Model\Table\DepartmentHeadquarterTable Test Case
  */
-class UsersTableTest extends TestCase
+class DepartmentHeadquarterTableTest extends TestCase
 {
     /**
      * Test subject
      *
-     * @var \App\Model\Table\UsersTable
+     * @var \App\Model\Table\DepartmentHeadquarterTable
      */
-    protected $Users;
+    protected $DepartmentHeadquarter;
 
     /**
      * Fixtures
@@ -24,8 +24,9 @@ class UsersTableTest extends TestCase
      * @var array
      */
     protected $fixtures = [
-        'app.Users',
-        'app.Roles',
+        'app.DepartmentHeadquarter',
+        'app.Departments',
+        'app.Headquarters',
         'app.People',
     ];
 
@@ -37,8 +38,8 @@ class UsersTableTest extends TestCase
     public function setUp(): void
     {
         parent::setUp();
-        $config = $this->getTableLocator()->exists('Users') ? [] : ['className' => UsersTable::class];
-        $this->Users = $this->getTableLocator()->get('Users', $config);
+        $config = $this->getTableLocator()->exists('DepartmentHeadquarter') ? [] : ['className' => DepartmentHeadquarterTable::class];
+        $this->DepartmentHeadquarter = $this->getTableLocator()->get('DepartmentHeadquarter', $config);
     }
 
     /**
@@ -48,7 +49,7 @@ class UsersTableTest extends TestCase
      */
     public function tearDown(): void
     {
-        unset($this->Users);
+        unset($this->DepartmentHeadquarter);
 
         parent::tearDown();
     }
@@ -57,7 +58,7 @@ class UsersTableTest extends TestCase
      * Test validationDefault method
      *
      * @return void
-     * @uses \App\Model\Table\UsersTable::validationDefault()
+     * @uses \App\Model\Table\DepartmentHeadquarterTable::validationDefault()
      */
     public function testValidationDefault(): void
     {
@@ -68,7 +69,7 @@ class UsersTableTest extends TestCase
      * Test buildRules method
      *
      * @return void
-     * @uses \App\Model\Table\UsersTable::buildRules()
+     * @uses \App\Model\Table\DepartmentHeadquarterTable::buildRules()
      */
     public function testBuildRules(): void
     {

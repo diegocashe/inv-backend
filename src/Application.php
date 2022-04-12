@@ -29,6 +29,13 @@ use Cake\ORM\Locator\TableLocator;
 use Cake\Routing\Middleware\AssetMiddleware;
 use Cake\Routing\Middleware\RoutingMiddleware;
 
+
+use Authentication\AuthenticationService;
+use Authentication\AuthenticationServiceInterface;
+use Authentication\AuthenticationServiceProviderInterface;
+use Authentication\Middleware\AuthenticationMiddleware;
+use Cake\Routing\Router;
+use Psr\Http\Message\ServerRequestInterface;
 /**
  * Application setup class.
  *
@@ -66,6 +73,7 @@ class Application extends BaseApplication
 
         // Load more plugins here
         // $this->addPlugin('ADmad/JwtAuth');
+        $this->addPlugin('ADmad/JwtAuth');
     }
 
     /**
@@ -133,6 +141,18 @@ class Application extends BaseApplication
     public function services(ContainerInterface $container): void
     {
     }
+
+//     public function getAuthenticationService(ServerRequestInterface $request): AuthenticationServiceInterface
+// {
+//     $service = new AuthenticationService();
+//     ...
+//     $service->loadIdentifier('Authentication.JwtSubject');
+//     $service->loadAuthenticator('Authentication.Jwt', [
+//         'secretKey' => file_get_contents(CONFIG . '/jwt.pem'),
+//         'algorithm' => 'RS256',
+//         'returnPayload' => false
+//     ]);
+// }
 
     /**
      * Bootstrapping for CLI application.

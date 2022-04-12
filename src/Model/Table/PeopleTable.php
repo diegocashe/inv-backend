@@ -11,8 +11,9 @@ use Cake\Validation\Validator;
 /**
  * People Model
  *
- * @property \App\Model\Table\DepartmentsTable&\Cake\ORM\Association\BelongsTo $Departments
  * @property \App\Model\Table\PositionsTable&\Cake\ORM\Association\BelongsTo $Positions
+ * @property \App\Model\Table\UsersTable&\Cake\ORM\Association\BelongsTo $Users
+ * @property \App\Model\Table\DepartmentHeadquarterTable&\Cake\ORM\Association\BelongsTo $DepartmentHeadquarter
  *
  * @method \App\Model\Entity\Person newEmptyEntity()
  * @method \App\Model\Entity\Person newEntity(array $data, array $options = [])
@@ -48,13 +49,15 @@ class PeopleTable extends Table
 
         $this->addBehavior('Timestamp');
 
-        $this->belongsTo('Departments', [
-            'foreignKey' => 'department_id',
-            'joinType' => 'INNER',
-        ]);
         $this->belongsTo('Positions', [
             'foreignKey' => 'position_id',
+        ]);
+        $this->belongsTo('Users', [
+            'foreignKey' => 'user_id',
             'joinType' => 'INNER',
+        ]);
+        $this->belongsTo('DepartmentHeadquarter', [
+            'foreignKey' => 'department_headquarter_id',
         ]);
     }
 
@@ -71,39 +74,25 @@ class PeopleTable extends Table
             ->allowEmptyString('id', null, 'create');
 
         $validator
-            ->scalar('first_name_1')
-            ->maxLength('first_name_1', 100)
-            ->requirePresence('first_name_1', 'create')
-            ->notEmptyString('first_name_1');
+            ->scalar('first_name')
+            ->maxLength('first_name', 100)
+            ->requirePresence('first_name', 'create')
+            ->notEmptyString('first_name');
 
         $validator
-            ->scalar('first_name_2')
-            ->maxLength('first_name_2', 100)
-            ->requirePresence('first_name_2', 'create')
-            ->notEmptyString('first_name_2');
-
-        $validator
-            ->scalar('last_name_1')
-            ->maxLength('last_name_1', 100)
-            ->requirePresence('last_name_1', 'create')
-            ->notEmptyString('last_name_1');
-
-        $validator
-            ->scalar('last_name_2')
-            ->maxLength('last_name_2', 100)
-            ->requirePresence('last_name_2', 'create')
-            ->notEmptyString('last_name_2');
+            ->scalar('last_name')
+            ->maxLength('last_name', 100)
+            ->requirePresence('last_name', 'create')
+            ->notEmptyString('last_name');
 
         $validator
             ->email('email')
-            ->requirePresence('email', 'create')
-            ->notEmptyString('email');
+            ->allowEmptyString('email');
 
         $validator
             ->scalar('nacional_identify')
             ->maxLength('nacional_identify', 255)
-            ->requirePresence('nacional_identify', 'create')
-            ->notEmptyString('nacional_identify');
+            ->allowEmptyString('nacional_identify');
 
         return $validator;
     }
@@ -117,9 +106,10 @@ class PeopleTable extends Table
      */
     public function buildRules(RulesChecker $rules): RulesChecker
     {
-        $rules->add($rules->isUnique(['email', 'nacional_identify']), ['errorField' => 'email']);
-        $rules->add($rules->existsIn('department_id', 'Departments'), ['errorField' => 'department_id']);
+        $rules->add($rules->existsIn('user_id', 'Users'), ['errorField' => 'user_id']);
+        $rules->add($rules->isUnique(['email', 'nacional_identify'], ['allowMultipleNulls' => true]), ['errorField' => 'email']);
         $rules->add($rules->existsIn('position_id', 'Positions'), ['errorField' => 'position_id']);
+        $rules->add($rules->existsIn('department_headquarter_id', 'DepartmentHeadquarter'), ['errorField' => 'department_headquarter_id']);
 
         return $rules;
     }
