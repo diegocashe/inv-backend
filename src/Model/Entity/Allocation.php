@@ -9,8 +9,8 @@ use Cake\ORM\Entity;
  * Allocation Entity
  *
  * @property int $id
- * @property \Cake\I18n\FrozenTime $assigment_date
- * @property \Cake\I18n\FrozenTime $dispatch_date
+ * @property \Cake\I18n\FrozenTime|null $assigment_date
+ * @property \Cake\I18n\FrozenTime|null $dispatch_date
  * @property string $ubication
  * @property bool $active
  * @property int $item_id
@@ -19,9 +19,8 @@ use Cake\ORM\Entity;
  * @property \Cake\I18n\FrozenTime $created
  * @property \Cake\I18n\FrozenTime $modified
  *
- * @property \App\Model\Entity\Person $assigned
- * @property \App\Model\Entity\Person $assignor
  * @property \App\Model\Entity\Item $item
+ * @property \App\Model\Entity\Person $person
  * @property \App\Model\Entity\Observation[] $observations
  */
 class Allocation extends Entity
@@ -45,9 +44,8 @@ class Allocation extends Entity
         'assignor_people_id' => true,
         'created' => true,
         'modified' => true,
-        'assigned' => true,
-        'assignor' => true,
         'item' => true,
+        'person' => true,
         'observations' => true,
     ];
 }

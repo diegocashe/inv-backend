@@ -20,16 +20,11 @@ class PeopleController extends ApiController
      */
     public function index()
     {
-        try {
-            $people = $this->People->find('all');
-            $response =  $this->response
-                ->withType('application/json')
-                ->withStringBody(json_encode($people));
-            return $response;
-        } catch (\Throwable $th) {
-            $people = $th->getMessage();
-        }
-        $this->set(compact('people'));
+        $people = $this->People->find('all');
+        $response =  $this->response
+            ->withType('application/json')
+            ->withStringBody(json_encode($people));
+        return $response;
     }
 
     /**
@@ -41,16 +36,31 @@ class PeopleController extends ApiController
      */
     public function view($id = null)
     {
+        $person = $this->People->get($id, [
+            'contain' => ['Departments', 'Positions'],
+        ]);
+        $response =  $this->response
+            ->withType('application/json')
+            ->withStringBody(json_encode($person));
+        return $response;
+    }
 
-        try {
-            $person = $this->People->get($id, [
-                'contain' => ['Departments', 'Positions'],
-            ]);
-        } catch (\Throwable $th) {
-            $person = $th->getMessage();
-        }
-
-        $this->set('person', $person);
+/**
+     * Allocations method
+     *
+     * @param string|null $id Person id.
+     * @return \Cake\Http\Response|null
+     * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
+     */
+    public function allocations($id = null)
+    {
+        $person = $this->People->get($id, [
+            // 'contain' => ['Allocations'],
+        ]);
+        $response =  $this->response
+            ->withType('application/json')
+            ->withStringBody(json_encode($id));
+        return $response;
     }
 
     /**
@@ -60,24 +70,18 @@ class PeopleController extends ApiController
      */
     public function add()
     {
-        $person = $this->People->newEntity();
+
+        $person = $this->People->newEmptyEntity();
         if ($this->request->is('post')) {
             $person = $this->People->patchEntity($person, $this->request->getData());
 
-            try {
-                $newPerson = $this->People->save($person);
+            $newPerson = $this->People->save($person);
 
-                $message = (!$newPerson)
-                    ? 'The person has been saved.'
-                    : 'The person could not be saved. Please, try again.';
-            } catch (\Throwable $th) {
-                $newPerson = $th->getMessage();
-                $message = 'The person could not be saved. Please, try again.';
-            }
+            $response =  $this->response
+                ->withType('application/json')
+                ->withStringBody(json_encode($newPerson));
+            return $response;
         }
-
-        $this->set('person', $newPerson);
-        $this->set('message', $message);
     }
 
     /**
@@ -138,9 +142,9 @@ class PeopleController extends ApiController
 
     public function settings()
     {
-        $headquarters = $this->loadModel('Headquarters');
-        $department = $this->loadModel('Departments');
-        $positions = $this->loadModel('Position');
+        $headquarters = $this->fetchTable('Headquarters');
+        $department = $this->fetchTable('Departments');
+        $positions = $this->fetchTable('Position');
         // $people = $this->People obtener las filas y columnas de aqui
         $this->set(compact('headquarters', 'departments', 'positions'));
     }

@@ -25,9 +25,8 @@ class AllocationsTableTest extends TestCase
      */
     protected $fixtures = [
         'app.Allocations',
-        'app.People',
         'app.Items',
-        'app.Users',
+        'app.People',
         'app.Observations',
     ];
 

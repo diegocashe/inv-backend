@@ -39,6 +39,7 @@ class User extends Entity
         'modified' => true,
         'role' => true,
         'person' => true,
+        'password'=>true
     ];
 
     /**
@@ -46,7 +47,8 @@ class User extends Entity
      *
      * @var array
      */
-    protected $_hidden = [
-        'password',
-    ];
+    // protected $_hidden = [
+    //     'password',
+    // ];
+    // volver privado a lo que haya seguridad jwt
 }

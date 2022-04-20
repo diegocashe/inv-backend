@@ -79,13 +79,11 @@ class AllocationsTable extends Table
 
         $validator
             ->dateTime('assigment_date')
-            ->requirePresence('assigment_date', 'create')
-            ->notEmptyDateTime('assigment_date');
+            ->allowEmptyDateTime('assigment_date');
 
         $validator
             ->dateTime('dispatch_date')
-            ->requirePresence('dispatch_date', 'create')
-            ->notEmptyDateTime('dispatch_date');
+            ->allowEmptyDateTime('dispatch_date');
 
         $validator
             ->scalar('ubication')
@@ -109,8 +107,8 @@ class AllocationsTable extends Table
      */
     public function buildRules(RulesChecker $rules): RulesChecker
     {
-        $rules->add($rules->existsIn('assigned_people_id', 'People'), ['errorField' => 'assigned_people_id']);
         $rules->add($rules->existsIn('item_id', 'Items'), ['errorField' => 'item_id']);
+        $rules->add($rules->existsIn('assigned_people_id', 'People'), ['errorField' => 'assigned_people_id']);
         $rules->add($rules->existsIn('assignor_people_id', 'People'), ['errorField' => 'assignor_people_id']);
 
         return $rules;

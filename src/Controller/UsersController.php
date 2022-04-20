@@ -3,6 +3,8 @@
 declare(strict_types=1);
 
 namespace App\Controller;
+use App\Controller\ApiController;
+
 
 /**
  * Users Controller
@@ -10,7 +12,7 @@ namespace App\Controller;
  * @property \App\Model\Table\UsersTable $Users
  * @method \App\Model\Entity\User[]|\Cake\Datasource\ResultSetInterface paginate($object = null, array $settings = [])
  */
-class UsersController extends AppController
+class UsersController extends ApiController
 {
     /**
      * Index method

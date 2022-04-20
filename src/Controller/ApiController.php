@@ -23,8 +23,9 @@ class ApiController extends AppController
      */
     public function initialize(): void
     {
-        $this->viewBuilder()->disableAutoLayout();
+        // View::disableAutoLayout() ;
         parent::initialize();
+        $this->viewBuilder()->disableAutoLayout();
         // $this->loadComponent('Auth', [
         //     'storage' => 'Memory',
         //     'authenticate' => [

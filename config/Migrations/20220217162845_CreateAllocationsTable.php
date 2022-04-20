@@ -15,8 +15,8 @@ class CreateAllocationsTable extends AbstractMigration
     {
         $table = $this->table(('allocations'));
         $table
-            ->addColumn('assigment_date', 'datetime', ['null' => false])
-            ->addColumn('dispatch_date', 'datetime', ['null' => false])
+            ->addColumn('assigment_date', 'datetime', ['null' => true])
+            ->addColumn('dispatch_date', 'datetime', ['null' => true])
             ->addColumn('ubication', 'string', ['null' => false])
             ->addColumn('active', 'boolean', ['null' => false, 'default' => true])
 
